@@ -21,7 +21,7 @@ const CustomContainer = styled.div<{ displayState: boolean }>`
 `;
 
 const ProjectContainer = styled.div<{ projectState: boolean }>`
-  display: ${(props: any) => props.displayState ? "none" : "block"};
+  display: ${(props: any) => props.projectState ? "block" : "none"};
   text-align: center;
   transition: all 0.3s ease-out;
 `;
