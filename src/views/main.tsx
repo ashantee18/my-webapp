@@ -3,6 +3,7 @@ import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import React, { FunctionComponent, useEffect, useState } from "react";
 import styled from 'styled-components';
+import MarkdownView from 'react-showdown';
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetReadme, actionGetRepositories } from "../modules/actions";
 import { getReadmeSelector, getRepoSelector } from "../selector";
@@ -36,9 +37,6 @@ const Italic = styled(Typography)`
 const Header = styled(Typography)`
   color: #fff;
   padding: 15px 0;
-`;
-const Pre = styled.pre`
-  white-space: break-spaces;
 `;
 
 export const Main: FunctionComponent = () => {
@@ -155,7 +153,7 @@ export const Main: FunctionComponent = () => {
           </Typography>
           <Border />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <Pre>{decode}</Pre>
+            <MarkdownView markdown={decode} />
           </Typography>
         </Box>
       </Modal>
