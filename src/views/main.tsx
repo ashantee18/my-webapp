@@ -29,6 +29,13 @@ const ProjectContainer = styled.div<{ projectState: boolean }>`
 const Empty = styled(Grid)`
   font-size: 25px;
 `;
+const Italic = styled(Typography)`
+  font-style: italic;
+  padding: 15px 0;
+`;
+const Header = styled(Typography)`
+  color: #fff;
+`;
 
 export const Main: FunctionComponent = () => {
   const [username, setUsername] = useState('');
@@ -81,7 +88,8 @@ export const Main: FunctionComponent = () => {
       <CustomContainer displayState={displayState}>
         <Container maxWidth="md">
           <SearchBar>
-            <h1>Retrieve Public Repositories <br /> using GitHub API</h1>
+            <Header variant='h4'>Retrieve Public Repositories <br /> using GitHub API</Header>
+            <br />
             <FormControl>
               <SearchField
                 label="Username"
@@ -103,8 +111,8 @@ export const Main: FunctionComponent = () => {
       </CustomContainer>
       <ProjectContainer projectState={projectState} className='projectsContainer'>
         <ProjectHeader>
-          <h2>Showing public repositories of {username}</h2>
-          <i>Clicking the projects below will show the Readme of each repository.</i>
+          <Typography variant='h5'>Showing public repositories of {username}</Typography>
+          <Italic>Clicking the projects below will show the Readme of each repository.</Italic>
         </ProjectHeader>
         <Box>
           <Container>

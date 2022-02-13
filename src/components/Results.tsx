@@ -1,6 +1,7 @@
+import { Typography } from '@mui/material';
 import styled from 'styled-components';
 
-export const TotalCount = styled('i')`
+export const TotalCount = styled(Typography)`
   text-align: right;
   display: block;
   margin-bottom: 50px;
