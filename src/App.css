@@ -8,3 +8,10 @@ h1{
 .SearchButton{
   margin-top: 20px!important;
 }
+
+.project-item{
+  cursor: pointer;
+  border-bottom: 1px solid #7395AE;
+  padding: 20px 0;
+}
+

@@ -1,6 +1,7 @@
-import { styled, TextField } from "@mui/material";
+import styled from 'styled-components';
+import { IconButton, TextField } from "@mui/material";
 
-const SearchField = styled(TextField)({
+export const SearchField = styled(TextField)({
   '& label.Mui-focused': {
     color: '#FFFFFF',
   },
@@ -24,4 +25,13 @@ const SearchField = styled(TextField)({
   },
 });
 
-export default SearchField;
+export const SearchBar = styled.div`
+  text-align: center;
+  width: 60%;
+  margin: 0 auto;
+  display:grid;
+`;
+
+export const SearchIcon = styled(IconButton)`
+  color:#fff!important;
+`;

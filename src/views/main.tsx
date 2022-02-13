@@ -1,4 +1,4 @@
-import { Box, Container, FormControl, IconButton, Modal, Typography } from "@mui/material";
+import { Box, Container, FormControl, Modal, Typography } from "@mui/material";
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -6,8 +6,10 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from "react-redux";
 import { actionGetReadme, actionGetRepositories } from "../modules/actions";
 import { getReadmeSelector, getRepoSelector } from "../selector";
-import SearchField from "../components/SearchField";
+import { SearchBar, SearchIcon, SearchField } from "../components/SearchField";
 import { Base64 } from "js-base64";
+import { ProjectHeader, TotalCount } from "../components/Results";
+import { Border, ModalStyle } from "../components/Modal";
 
 const CustomContainer = styled.div<{ displayState: boolean }>`
   margin: 0 auto;
@@ -15,44 +17,24 @@ const CustomContainer = styled.div<{ displayState: boolean }>`
   align-items: center;
   transition: all 0.3s ease-out;
   height: ${(props: any) => props.displayState ? "40vh" : "100vh"};
-  transition: all 0.3s ease-out;
   background-color:#557A95;
 `;
-const ProjectContainer = styled.div`
-  margin-top: 40px;
+
+const ProjectContainer = styled.div<{ projectState: boolean }>`
+  display: ${(props: any) => props.displayState ? "none" : "block"};
   text-align: center;
-  cursor: pointer;
-`;
-const SearchBar = styled.div`
-  text-align: center;
-  width: 60%;
-  margin: 0 auto;
-  display:grid;
+  transition: all 0.3s ease-out;
 `;
 
-const SearchIcon = styled(IconButton)`
-  color:#fff!important;
+const Empty = styled(Box)`
+  font-size: 25px;
 `;
-
-const ModalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 600,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-  overflow: 'auto',
-  maxHeight: '80%',
-};
-
 
 export const Main: FunctionComponent = () => {
   const [username, setUsername] = useState('');
   const [repository, setRepoName] = useState('');
   const [displayState, setDisplayState] = useState(false);
+  const [projectState, setProjectState] = useState(false);
   const [open, setOpen] = React.useState(false);
   const [decode, setEncode] = React.useState('');
   const handleOpen = () => setOpen(true);
@@ -62,24 +44,24 @@ export const Main: FunctionComponent = () => {
   const list = useSelector(getRepoSelector);
   const readme = useSelector(getReadmeSelector);
 
-  const element = document.getElementById("modal-modal-description");
-
   useEffect(() => {
     const decodeString = Base64.atob(readme);
     setEncode(decodeString);
-  },[readme])
+  }, [readme])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setDisplayState(true);
       onClickSearch();
     } else {
+      setProjectState(false);
       setDisplayState(false);
     }
   }
 
   const onClickSearch = () => {
     setDisplayState(true);
+    setProjectState(true);
     dispatch(actionGetRepositories(username));
   }
 
@@ -99,7 +81,7 @@ export const Main: FunctionComponent = () => {
       <CustomContainer displayState={displayState}>
         <Container maxWidth="md">
           <SearchBar>
-            <h1>LOREM IPSUM</h1>
+            <h1>Retrieve Public Repositories <br /> using GitHub API</h1>
             <FormControl>
               <SearchField
                 label="Username"
@@ -119,17 +101,31 @@ export const Main: FunctionComponent = () => {
           </SearchBar>
         </Container>
       </CustomContainer>
-      <ProjectContainer className='projectsContainer'>
-        <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={4}>
-          {list.length > 0 &&
-            list && list.map((repo: any, index: number) => (
-              <Box gridColumn="span 4" key={index}>
-                <FolderOpenOutlinedIcon onClick={() => onClickProject(repo.name)} className="muiIcon" />
-                <h2>{repo.name}</h2>
-              </Box>
-            ))
-          }
-        </Box>
+      <ProjectContainer projectState={projectState} className='projectsContainer'>
+        <ProjectHeader>
+          <h2>Showing public repositories of {username}</h2>
+          <i>Clicking the projects below will show the Readme of each repository.</i>
+        </ProjectHeader>
+        <Container>
+          <TotalCount>{list.length} repositories found</TotalCount>
+          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={4}>
+            {list && list.length > 0 ?
+              (list.map((repo: any, index: number) => {
+                return (
+                  <Box gridColumn="span 4" key={index} className='project-item'>
+                    <FolderOpenOutlinedIcon onClick={() => onClickProject(repo.name)} className="muiIcon" />
+                    <h2>{repo.name}</h2>
+                  </Box>
+                )
+              })
+              ) : (
+                <Empty gridColumn="span 12">
+                  Nothing here...
+                </Empty>
+              )
+            };
+          </Box>
+        </Container>
       </ProjectContainer>
       <Modal
         open={open}
@@ -141,6 +137,7 @@ export const Main: FunctionComponent = () => {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Readme of {repository} by {username}
           </Typography>
+          <Border />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {decode}
           </Typography>
