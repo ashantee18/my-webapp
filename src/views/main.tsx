@@ -152,7 +152,7 @@ export const Main: FunctionComponent = () => {
           </Typography>
           <Border />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {decode}
+            <pre>{decode}</pre>
           </Typography>
         </Box>
       </Modal>
