@@ -8,7 +8,7 @@ import { actionGetReadme, actionGetRepositories } from "../modules/actions";
 import { getReadmeSelector, getRepoSelector } from "../selector";
 import { SearchBar, SearchIcon, SearchField } from "../components/SearchField";
 import { Base64 } from "js-base64";
-import { ProjectHeader, TotalCount } from "../components/Results";
+import { ProjectHeader, ProjectName, TotalCount } from "../components/Results";
 import { Border, ModalStyle } from "../components/Modal";
 
 const CustomContainer = styled.div<{ displayState: boolean }>`
@@ -35,6 +35,7 @@ const Italic = styled(Typography)`
 `;
 const Header = styled(Typography)`
   color: #fff;
+  padding: 15px 0;
 `;
 
 export const Main: FunctionComponent = () => {
@@ -88,8 +89,7 @@ export const Main: FunctionComponent = () => {
       <CustomContainer displayState={displayState}>
         <Container maxWidth="md">
           <SearchBar>
-            <Header variant='h4'>Retrieve Public Repositories <br /> using GitHub API</Header>
-            <br />
+            <Header variant='h5'>Retrieve Public Repositories <br /> using GitHub API</Header>
             <FormControl>
               <SearchField
                 label="Username"
@@ -111,10 +111,9 @@ export const Main: FunctionComponent = () => {
       </CustomContainer>
       <ProjectContainer projectState={projectState} className='projectsContainer'>
         <ProjectHeader>
-          <Typography variant='h5'>Showing public repositories of {username}</Typography>
+          <Typography variant='h6'>Showing public repositories of {username}</Typography>
           <Italic>Clicking the projects below will show the Readme of each repository.</Italic>
         </ProjectHeader>
-        <Box>
           <Container>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               <Grid item xs={12} sm={12} md={12}>
@@ -126,7 +125,7 @@ export const Main: FunctionComponent = () => {
                     <>
                     <Grid item xs={2} sm={4} md={4} key={index} className='project-item'>
                       <FolderOpenOutlinedIcon onClick={() => onClickProject(repo.name)} className="muiIcon" />
-                      <h2>{repo.name}</h2>
+                      <ProjectName variant="h6">{repo.name}</ProjectName>
                     </Grid>
                     </>
                   )
@@ -140,7 +139,6 @@ export const Main: FunctionComponent = () => {
 
             </Grid>
           </Container>
-        </Box>
       </ProjectContainer>
       <Modal
         open={open}
