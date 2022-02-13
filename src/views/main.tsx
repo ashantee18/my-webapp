@@ -1,4 +1,4 @@
-import { Box, Container, FormControl, Modal, Typography } from "@mui/material";
+import { Box, Container, FormControl, Grid, Modal, Typography } from "@mui/material";
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -26,7 +26,7 @@ const ProjectContainer = styled.div<{ projectState: boolean }>`
   transition: all 0.3s ease-out;
 `;
 
-const Empty = styled(Box)`
+const Empty = styled(Grid)`
   font-size: 25px;
 `;
 
@@ -106,26 +106,33 @@ export const Main: FunctionComponent = () => {
           <h2>Showing public repositories of {username}</h2>
           <i>Clicking the projects below will show the Readme of each repository.</i>
         </ProjectHeader>
-        <Container>
-          <TotalCount>{list.length} repositories found</TotalCount>
-          <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={4}>
-            {list && list.length > 0 ?
-              (list.map((repo: any, index: number) => {
-                return (
-                  <Box gridColumn="span 4" key={index} className='project-item'>
-                    <FolderOpenOutlinedIcon onClick={() => onClickProject(repo.name)} className="muiIcon" />
-                    <h2>{repo.name}</h2>
-                  </Box>
+        <Box>
+          <Container>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              <Grid item xs={12} sm={12} md={12}>
+                <TotalCount>{list.length} repositories found</TotalCount>
+              </Grid>
+              {list && list.length > 0 ?
+                (list.map((repo: any, index: number) => {
+                  return (
+                    <>
+                    <Grid item xs={2} sm={4} md={4} key={index} className='project-item'>
+                      <FolderOpenOutlinedIcon onClick={() => onClickProject(repo.name)} className="muiIcon" />
+                      <h2>{repo.name}</h2>
+                    </Grid>
+                    </>
+                  )
+                })
+                ) : (
+                  <Empty item xs={12} sm={12} md={12} >
+                    Nothing here...
+                  </Empty>
                 )
-              })
-              ) : (
-                <Empty gridColumn="span 12">
-                  Nothing here...
-                </Empty>
-              )
-            };
-          </Box>
-        </Container>
+              };
+
+            </Grid>
+          </Container>
+        </Box>
       </ProjectContainer>
       <Modal
         open={open}
