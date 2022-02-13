@@ -1,0 +1,10 @@
+h1{
+  color:#fff;
+}
+.muiIcon{
+  transform: scale(3);
+  text-align: center;
+}
+.SearchButton{
+  margin-top: 20px!important;
+}
