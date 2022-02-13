@@ -37,6 +37,9 @@ const Header = styled(Typography)`
   color: #fff;
   padding: 15px 0;
 `;
+const Pre = styled.pre`
+  white-space: break-spaces;
+`;
 
 export const Main: FunctionComponent = () => {
   const [username, setUsername] = useState('');
@@ -152,7 +155,7 @@ export const Main: FunctionComponent = () => {
           </Typography>
           <Border />
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <pre>{decode}</pre>
+            <Pre>{decode}</Pre>
           </Typography>
         </Box>
       </Modal>
